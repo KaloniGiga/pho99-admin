@@ -14,7 +14,6 @@ import MenuList from './Pages/MenuList/MenuList';
 import AdminLogin from './Pages/AdminLogin/AdminLogin';
 import HomePage from './Pages/Home/HomePage';
 import MenuDetails from './Pages/MenuDetails/menuDetails';
-import MenuImage from './Pages/MenuImage/menuImage';
 import LocationDetails from './Pages/LocationDetails/LocationDetails';
 import GalleryDetails from './Pages/GalleryDetails/GalleryDetails';
 import VacancyDetails from './Pages/VacancyDetails/VacancyDetails';
@@ -79,10 +78,6 @@ function App() {
         {
           path: '/menu-details',
           element: <MenuDetails />,
-        },
-        {
-          path: '/menu-image',
-          element: <MenuImage />
         },
         {
           path: '/news-list',

@@ -30,6 +30,7 @@ export interface DataValueType {
   mainContent: string,
   locationSubHeading: string,
   phoneNumber: string,
+  link: string,
 }
 
 function LocationListEdit(props: LocationListEditProps) {
@@ -68,6 +69,7 @@ function LocationListEdit(props: LocationListEditProps) {
     mainContent: '',
     locationSubHeading: '',
     phoneNumber: '',
+    link: '',
    })
 
    useEffect(() => {
@@ -76,6 +78,7 @@ function LocationListEdit(props: LocationListEditProps) {
         mainContent: props.updateData ? props.updateData.mainContent: '',
         locationSubHeading: props.updateData ? props.updateData.locationSubHeading: '',
         phoneNumber: props.updateData ? props.updateData.phoneNumber : '',
+        link: props.updateData && props.updateData.link ? props.updateData.link : '',
     })
    }, [props.updateData])
 
@@ -100,7 +103,7 @@ function LocationListEdit(props: LocationListEditProps) {
    }, [])
  
    const addData = ()  => {
-     
+        console.log(dataValues);
        axiosInstance({
             url: url,
             method: props.method,
@@ -175,6 +178,16 @@ function LocationListEdit(props: LocationListEditProps) {
              label="Phone Number"
             />
             
+        </div>
+        <div >
+            <InputField
+             inputValue={dataValues}
+             setInputValue={setDataValues}
+             name="link"
+             type="text"
+             placeholder="Enter Food Delivery Link..."
+             label="Food Delivery Link"
+            />
         </div>
         <div className='w-full flex justify-end'>
         <button onClick={() => addData()} className='text-white px-[20px] py-[5px] ml-auto mb-4 hover:text-[#EC1C24] rounded-3xl border-[1px] border-white]'>

@@ -5,7 +5,6 @@ import { AxiosResponse } from 'axios';
 import MenuListEdit from './MenuListEdit';
 import { Table, message } from 'antd';
 import { axiosInstance } from '../../http';
-import { ICategoryList } from '../Category/CategoryList';
 
 export interface CategoryProps {
   id: number;
@@ -17,7 +16,8 @@ export interface IMenuList {
    heading: string,
    subHeading: string,
    price: string,
-   category: CategoryProps,
+   fileName: string,
+   path: string,
 }
 
 function MenuList() {
@@ -25,7 +25,6 @@ function MenuList() {
     const url = `${server}/menu`;
     const layoutContextData = useContext(LayoutContext);
     const [menuList, setMenuList] = useState<IMenuList[]|undefined>([]);
-    const [categoryList, setCategoryList] = useState<ICategoryList[]|null>([])
 
     useEffect(() => {
        axiosInstance.get(url)
@@ -39,17 +38,6 @@ function MenuList() {
        })
     }, [])
 
-     useEffect(() => {
-       axiosInstance.get(`${server}/category`)
-       .then((res: AxiosResponse<ICategoryList[], null>
-      ) => {
-        const data:ICategoryList[] | null = res.data;
-         console.log(data);
-          setCategoryList(data);
-       }).catch((err) => {
-           console.log(err)
-       })
-    }, [])
 
     const tableItemDelete =  (record) => {
             
@@ -89,12 +77,11 @@ function MenuList() {
        key: 'view',
        render: ( record) => (
          <button 
-         className="px-2 py-1 rounded-2xl border-2 border-primarylight hover:text-[#EC1C24]"
+         className="px-2 py-1 rounded-2xl border-2 border-white hover:text-[#EC1C24]"
          onClick={() => {
             console.log('eh')
             layoutContextData?.setTopSheetContent(
               <MenuListEdit
-                categoryList={categoryList}
                 menuList={menuList}
                 setMenuList={setMenuList}
                 method="PUT"
@@ -115,7 +102,7 @@ function MenuList() {
         key: 'delete',
         render: (record) => (
           <button 
-           className="px-2 py-1 border-2 hover:text-[#EC1C24] border-primarylight rounded-2xl"
+           className="px-2 py-1 border-2 hover:text-[#EC1C24] border-white rounded-2xl"
            onClick={() => tableItemDelete(record)}
           >
             Delete
@@ -131,7 +118,7 @@ function MenuList() {
                 <button
              className="mb-4 text-white border-[1px] border-white px-4 py-2 rounded-3xl text-sm hover:text-[red] "
             onClick={() => {
-            layoutContextData?.setTopSheetContent(<MenuListEdit menuList={menuList} setMenuList={setMenuList} categoryList={categoryList} method="POST" url={url} />);
+            layoutContextData?.setTopSheetContent(<MenuListEdit menuList={menuList} setMenuList={setMenuList} method="POST" url={url} />);
             layoutContextData?.setTopSheet(true);
            }}
           >

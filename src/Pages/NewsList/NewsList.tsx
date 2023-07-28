@@ -15,6 +15,7 @@ export interface INewsList {
   publishedDate: string;
   fileName: string;
   path: string;
+  link: string;
 }
 
 function NewsList() {

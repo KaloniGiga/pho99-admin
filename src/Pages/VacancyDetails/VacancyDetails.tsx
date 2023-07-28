@@ -2,8 +2,10 @@ import {useState, useEffect } from 'react'
 import InputField from '../../components/Input/InputField'
 import { axiosInstance } from '../../http'
 import { server } from '../../utils/fetch'
+import { message } from 'antd';
 
 export interface DataValueType {
+  id?: number,
   heading: string,
   subHeading: string,
 }
@@ -14,12 +16,15 @@ function VacancyDetails() {
       heading: '',
       subHeading: '',
    });
+   const [isCreated, setIsCreated] = useState(false);
    
-
    useEffect(() => {
-     axiosInstance.get('/home')
+     axiosInstance.get('/vacancy-detail')
      .then((res) => {
-        setHomeDetails(res.data);
+        if(res.data && res.data.length > 0) {
+        setHomeDetails(res.data[0]);
+        setIsCreated(true)
+        }
      })
      .catch((err) => {
        console.log(err);
@@ -28,13 +33,16 @@ function VacancyDetails() {
 
    const addData = ()  => {
        axiosInstance({
-           url: `${server}/home`,
-           method: `${homeDetails ? 'PUT': 'POST'}`,
+           url: `${server}/vacancy-detail`,
+           method: `${isCreated ? 'PUT': 'POST'}`,
            data: homeDetails,
         }).then((res) => {
           setHomeDetails(res.data); 
+          setIsCreated(true);
+          message.success("Vacancy Details Updated!")
         }).catch((error) => {
           console.log(error);
+          message.error("Failed to update!")
         })
 
    }

@@ -18,6 +18,7 @@ export interface ILocationList {
   mainContent: string,
   locationSubHeading: string,
   phoneNumber: string,
+  link: string,
   locationGallery: LocationGallery[],
 }
 

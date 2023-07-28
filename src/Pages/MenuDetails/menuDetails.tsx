@@ -2,8 +2,10 @@ import {useState, useEffect } from 'react'
 import InputField from '../../components/Input/InputField'
 import { axiosInstance } from '../../http'
 import { server } from '../../utils/fetch'
+import { message } from 'antd';
 
 export interface DataValueType {
+  id?:number,
   heading: string,
   subHeading: string,
 }
@@ -15,11 +17,17 @@ function MenuDetails() {
       subHeading: '',
    });
    
+   const [isCreated, setIsCreated] = useState(false);
+   
 
    useEffect(() => {
-     axiosInstance.get('/home')
+     axiosInstance.get('/menu-detail')
      .then((res) => {
-        setMenuDetails(res.data);
+      console.log(res.data);
+       if(res.data && res.data.length > 0) {
+        setMenuDetails(res.data[0]);
+        setIsCreated(true);
+       }
      })
      .catch((err) => {
        console.log(err);
@@ -28,13 +36,16 @@ function MenuDetails() {
 
    const addData = ()  => {
        axiosInstance({
-           url: `${server}/home`,
-           method: `${menuDetails ? 'PUT': 'POST'}`,
+           url: `${server}/menu-detail`,
+           method: `${isCreated ? 'PUT': 'POST'}`,
            data: menuDetails,
         }).then((res) => {
-          setMenuDetails(res.data); 
+          setMenuDetails(res.data);
+          setIsCreated(true); 
+          message.success("Menu updated")
         }).catch((error) => {
           console.log(error);
+           message.error('Failed to update')
         })
 
    }
@@ -63,7 +74,7 @@ function MenuDetails() {
 
         <div className='w-full flex justify-end'>
         <button onClick={() => addData()} className='text-white px-[20px] py-[5px] ml-auto mb-4 hover:text-[#EC1C24] rounded-3xl border-[1px] border-white]'>
-            {!menuDetails ? 'Add' : 'Update' }
+            {!isCreated ? 'Add' : 'Update' }
         </button>
        </div>
        </div>

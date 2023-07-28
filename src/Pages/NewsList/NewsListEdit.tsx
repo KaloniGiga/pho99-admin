@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { INewsList } from './NewsList'
 import { axiosInstance } from '../../http';
 import InputField from '../../components/Input/InputField';
-import { Modal, Upload } from 'antd';
+import { Modal, Upload, message } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { PlusOutlined } from '@ant-design/icons';
@@ -31,6 +31,7 @@ export interface DataValueType {
   publishedDate: string,
   fileName: string,
   path: string,
+  link: string,
 }
 
 function NewsListEdit(props: NewsListEditProps) {
@@ -72,6 +73,7 @@ function NewsListEdit(props: NewsListEditProps) {
     publishedDate: '',
     fileName: '',
     path: '',
+    link: '',
    })
 
    useEffect(() => {
@@ -82,6 +84,7 @@ function NewsListEdit(props: NewsListEditProps) {
         publishedDate: props.updateData ? props.updateData.publishedDate: '',
         fileName: props.updateData ? props.updateData.fileName: '',
         path: props.updateData ? props.updateData.path : '',
+        link: props.updateData ? props.updateData.link : '',
     })
    }, [props.updateData])
 
@@ -129,9 +132,11 @@ function NewsListEdit(props: NewsListEditProps) {
            !props.updateData && setIsCreated(true)
            !props.updateData && setCurrentId(data.id);
           }
+          message.success('News Item Updated!')
           //  layoutContextData?.setTopSheet(false);
         }).catch((error) => {
             console.log(error);
+            message.error('Failed to update') 
         })
    }
 
@@ -177,11 +182,10 @@ function NewsListEdit(props: NewsListEditProps) {
            <InputField
             inputValue={dataValues}
             setInputValue={setDataValues}
-            name='mainContent'
+            name='link'
             type='text'
-            placeholder='Enter main content'
-            label='Main Content'
-            textArea={true}
+            placeholder='Enter article link'
+            label='Article Link'
             />
         </div>  
 
